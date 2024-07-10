@@ -10,7 +10,7 @@ def is_router_accessible(public_ip):
 
 st.title("Check Home Power Status")
 
-public_ip = st.text_input("Enter the public IP address of your router:", "YOUR_PUBLIC_IP")
+public_ip = st.text_input("Enter the public IP address of your router!:", "YOUR_PUBLIC_IP")
 
 if st.button("Check Light"):
     if is_router_accessible(public_ip):
