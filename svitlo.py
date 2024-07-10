@@ -3,7 +3,7 @@ import requests
 
 def is_router_accessible(public_ip):
     try:
-        response = requests.get(f'http://{public_ip}', timeout=5)
+        response = requests.get(f'https://{public_ip}', timeout=5)
         return response.status_code == 200
     except requests.ConnectionError:
         return False
