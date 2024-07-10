@@ -1,32 +1,30 @@
 import streamlit as st
-from scapy.all import *
+import socket
 
+def check_router(ip_address, port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(2)  # Встановлюємо таймаут на 2 секунди
 
-def icmp_ping(host):
     try:
-        # Виконання пінгу за допомогою ICMP пакетів з допомогою scapy
-        packet = IP(dst=host) / ICMP()
-        reply = sr1(packet, timeout=2, verbose=False)
-
-        if reply:
-            return f"Урааа іди включай сімс: {host} доступний!"
-        else:
-            return f"От блєт, читай книжечку і чекай. Could not reach '{host}'"
-    except Exception as e:
-        return f"Error: {str(e)}"
-
+        sock.connect((ip_address, port))
+        return f"Роутер {ip_address} доступний на порті {port}."
+    except socket.error:
+        return f"Роутер {ip_address} не доступний на порті {port}."
+    finally:
+        sock.close()
 
 def main():
-    st.title('ICMP Ping Checker')
+    st.title('Перевірка доступності роутера через Socket')
 
-    host = st.text_input('Пиши IP:')
+    ip_address = st.text_input('Введіть IP-адресу роутера:')
+    port = 80  # Порт HTTP (змініть на потрібний)
 
-    if st.button('Ping'):
-        if host:
-            st.write(f'Pinging {host}...')
-            result = icmp_ping(host)
+    if st.button('Перевірити'):
+        if ip_address:
+            result = check_router(ip_address, port)
             st.write(result)
-
+        else:
+            st.warning('Будь ласка, введіть IP-адресу роутера.')
 
 if __name__ == '__main__':
     main()
