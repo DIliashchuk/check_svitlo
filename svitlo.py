@@ -17,7 +17,7 @@ def main():
     st.title('Перевірка доступності роутера через Socket')
 
     ip_address = st.text_input('Введіть IP-адресу роутера:')
-    port = 80  # Порт HTTP (змініть на потрібний)
+    port = 25  # Порт HTTP (змініть на потрібний)
 
     if st.button('Перевірити'):
         if ip_address:
