@@ -3,8 +3,8 @@ import subprocess
 
 def icmp_ping(host):
     try:
-        # Виконання системної команди ping
-        result = subprocess.run(['ping', '-c', '4', host], capture_output=True, text=True)
+        # Виконання системної команди ping з повним шляхом
+        result = subprocess.run(['/bin/ping', '-c', '4', host], capture_output=True, text=True)
         
         if result.returncode == 0:
             # Виведення результату пінгу
