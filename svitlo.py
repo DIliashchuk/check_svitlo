@@ -1,19 +1,29 @@
 import streamlit as st
-import requests
+import ping3
 
-def is_router_accessible(public_ip):
+
+def icmp_ping(host):
     try:
-        response = requests.get(f'https://{public_ip}', timeout=5)
-        return response.status_code == 200
-    except requests.ConnectionError:
-        return False
+        result = ping3.ping(host)
+        if result is not None:
+            return f"Урааа іди включай сімс: {result:.2f} ms"
+        else:
+            return f"От блєт, читай книжечку і чекай. Could not reach '{host}'"
+    except Exception as e:
+        return f"Error: {str(e)}"
 
-st.title("Check Home Power Status")
 
-public_ip = st.text_input("Enter the public IP address of your router:", "YOUR_PUBLIC_IP")
+def main():
+    st.title('Перевірка інтернетику')
 
-if st.button("Check Light"):
-    if is_router_accessible(public_ip):
-        st.success("Світло є вдома.")
-    else:
-        st.error("Світла немає вдома.")
+    host = st.text_input('Пиши IP:')
+
+    if st.button('Ping'):
+        if host:
+            st.write(f'Pinging {host}...')
+            result = icmp_ping(host)
+            st.write(result)
+
+
+if __name__ == '__main__':
+    main()
