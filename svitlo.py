@@ -1,21 +1,23 @@
 import streamlit as st
-from pythonping import ping
+import subprocess
 
 
 def icmp_ping(host):
     try:
-        response_list = ping(host, count=4)
-        if response_list.success():
-            avg_rtt = sum([r.time_elapsed_ms for r in response_list]) / len(response_list)
-            return f"Урааа іди включай сімс: {avg_rtt:.2f} ms"
+
+        result = subprocess.run(['ping', '-c', '4', host], capture_output=True, text=True)
+
+        if result.returncode == 0:
+
+            return f"Урааа іди включай сімс:\n{result.stdout}"
         else:
-            return f"От блєт, читай книжечку і чекай. Could not reach '{host}'"
+            return f"От блєт, читай книжечку і чекай. Could not reach '{host}':\n{result.stderr}"
     except Exception as e:
         return f"Error: {str(e)}"
 
 
 def main():
-    st.title('ICMP Ping Checker')
+    st.title('Перевірка Світла')
 
     host = st.text_input('Пиши IP:')
 
@@ -25,6 +27,17 @@ def main():
             result = icmp_ping(host)
             st.write(result)
 
+
+if __name__ == '__main__':
+    main()
+
+    host = st.text_input('Пиши IP:')
+
+    if st.button('Ping'):
+        if host:
+            st.write(f'Pinging {host}...')
+            result = icmp_ping(host)
+            st.write(result)
 
 if __name__ == '__main__':
     main()
