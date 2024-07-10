@@ -16,15 +16,15 @@ def check_router(ip_address, port):
 def main():
     st.title('Перевірка доступності роутера через Socket')
 
-    ip_address = st.text_input('Введіть IP-адресу роутера:')
-    port = 443  # Порт HTTP (змініть на потрібний)
+    ip_address = st.text_input('Введіть публічну IPv4 адресу роутера:')
+    port = 80  # Порт HTTP (змініть на потрібний)
 
     if st.button('Перевірити'):
         if ip_address:
             result = check_router(ip_address, port)
             st.write(result)
         else:
-            st.warning('Будь ласка, введіть IP-адресу роутера.')
+            st.warning('Будь ласка, введіть публічну IPv4 адресу роутера.')
 
 if __name__ == '__main__':
     main()
